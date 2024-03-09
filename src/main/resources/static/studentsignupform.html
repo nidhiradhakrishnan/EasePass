@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>student signup</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        header img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <div class="bg"></div>
+
+    <form>
+        <header>
+            <img src="LOGO-modified.png">
+        </header>
+
+        <div class="inputs"><br><br>
+            <input type="text" name="" id="username" placeholder="username">
+            <input type="text" name="" id="phonenumber" placeholder="phone number">
+            <input type="password" name="" id="password" placeholder="password">
+            <button type="button" onclick="redirect()">Create account</button>
+        </div>
+
+    </form>
+
+</div>
+
+   <script>
+    function redirect() {
+        var data = {
+            "username": document.getElementById("username").value,
+            "phonenumber": document.getElementById("phonenumber").value,
+            "password": document.getElementById("password").value,
+            "status": "pending",
+            "identitynumber": "",
+            "usertype": "student"
+        };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/signup", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status === "account created") {
+                        window.location.pathname = "/";
+                    } else {
+                        alert("Signup error");
+                    }
+                } else {
+                    alert("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        
+        xhr.send(JSON.stringify(data));
+    }
+</script>
+
+</body>
+</html>

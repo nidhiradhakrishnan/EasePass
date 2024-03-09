@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        /* Additional styles to make buttons square */
+        .button-square {
+            width: 130px; /* Adjust the width as needed */
+            height: 120px; /* Same height as width for square button */
+            padding: 5px; /* Remove padding to maintain square shape */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none; /* Remove default button border */
+        }
+
+        /* Style for the footer */
+        .choosecat {
+            background-color: #257fffaa6; /* Same as the button background color */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .choosecat p {
+            color: #fff; /* Text color for the footer */
+            margin: 0;
+        }
+
+        /* Hide button text */
+        .button-19 {
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+
+        }
+        h3 {
+  margin-top: 5px;
+    font-size:15px; color:white; word-spacing:1px; font-weight:normal; letter-spacing:2px;
+    text-transform: uppercase; font-family:"Raleway", sans-serif; font-weight:500;
+
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-template-rows: 27px 0;
+    grid-gap: 20px;
+    align-items: center;
+}
+    </style>
+</head>
+<body>
+
+<div class="app2">
+    <div class="bg"></div>
+    <form>
+        <header>
+       <br><br><br> <br><br><br><br><h3>WELCOME TO EASE PASS</h3>
+
+        </header>
+
+    	<div class="choosecat">
+        
+    	</div>
+        <div class="button-19 button-square" onClick="window.location.href='studentapply.html'" style="background-image: url('apply.jpg');">
+            <button class="button-19" role="button">apply for ease pass</button>
+        </div>
+
+        <div class="button-19 button-square" onClick="window.location.href='studentqr.html'" style="background-image: url('view.jpg');">
+            <button class="button-19" role="button">view ease pass</button>
+        </div><br><br>
+        <center><div class="button-19 button-square" onClick="window.location.href=''" style="background-image: url('account.jpg');">
+            <button class="button-19" role="button">account</button>
+        </div></center>
+
+        <div class="inputs"><br><br></div>
+
+    </form>
+
+
+
+</div>
+<script>
+    function redirect() {
+        window.location.href = 'studentapplicationform2.html';
+    }
+</script>
+</body>
+</html>

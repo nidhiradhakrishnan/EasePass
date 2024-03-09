@@ -1,0 +1,55 @@
+<html>
+   <body>
+      <link rel="stylesheet" href="main.css">
+      <div class="app">
+         <div class="bg"></div>
+         <form>
+            <header>
+               <img src="LOGO-modified.png">
+            </header>
+            <div class="inputs">
+               <br><br>
+               <input type="text" id="username" name="username" placeholder="username">
+               <input type="password" id="password" name="password" placeholder="password">
+               <button type="button" onclick="redirect()">Login</button>
+               <p>Don't have an account? <a href="optionchoose.html">Sign Up</a></p>
+            </div>
+         </form>
+      </div>
+      <script>
+         function redirect() {
+             var data = {
+         "username": document.getElementById("username").value,
+         "password": document.getElementById("password").value,
+
+         }
+         const xhr = new XMLHttpRequest();
+         xhr.open("POST", "http://localhost:8080/checkLogin", true);
+         xhr.setRequestHeader("Content-Type", "application/json");
+         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+         xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+           if(JSON.parse(xhr.responseText).status === "Login succes") {
+            if (JSON.parse(xhr.responseText).usertype=="student") 
+            {
+          localStorage.setItem("username",document.getElementById("username").value);
+          window.location.pathname= "/studenthome";
+
+            }
+         else
+         {
+         localStorage.setItem("username",document.getElementById("username").value);
+
+         window.location.pathname= "/conductorhome";
+         }
+         } else {
+         alert("wrong username or password");
+         }
+            
+         }
+         }
+         xhr.send(JSON.stringify(data));    }
+      </script>
+   </body>
+</html>

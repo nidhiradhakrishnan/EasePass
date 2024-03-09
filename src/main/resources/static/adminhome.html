@@ -1,0 +1,161 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="admin.css">
+  <link rel="stylesheet" type="text/css" href="table.css">
+
+  <style>
+    /* Additional CSS for the top bar */
+    .top-bar {
+  background: #257aa6;
+  color:white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  position: fixed; /* Add this line to make the top bar fixed */
+  width: 100%; /* Add this line to make the top bar span the full width */
+  z-index: 100; /* Add this line to ensure the top bar stays above other elements */
+}
+
+
+    .logo {
+      height: 100px; /* Adjust height as needed */
+      /* Add other styles as needed */
+    }
+
+    .brand-name {
+      align-items: center;
+      font-size: 54px; /* Adjust font size as needed */
+      /* Add other styles as needed */
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div>
+      <img src="LOGO-modified.png" alt="Your Logo" class="logo">
+    </div>
+    <div class="brand-name">&nbsp;&nbsp;&nbsp;Admin Dashboard</div>
+  </div>
+
+  <nav><br><br>
+    <a href="#first" onclick="student()"><i class="fas fa-user-graduate"></i> Student</a>    
+    <a href="#second" onclick="conductor()"><i class="fas fa-bus"></i> Conductor</a>
+    <a href="#third" onclick="apply()"><i class="fas fa-file-alt"></i> Application</a>
+    <a href="#four" onclick="account()"><i class="fas fa-user-circle"></i> Account</a>
+  </nav>
+  
+  <div class='container'> 
+    <section id='first'>
+      <table>
+    <thead>
+        <div class="table">
+    
+    <div class="row header blue">
+      <div class="cell">
+      User_name
+      </div>
+      <div class="cell">
+        phone_number
+      </div>
+      <div class="cell">
+         Action
+      </div>
+    </div>
+    </thead>
+     <tbody id="studentbody">
+     </tbody>
+  </table>
+    </section>
+  
+    <section id='second'>
+      <table>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Username</th>
+            <th>Identity Number</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+     <tbody id="conductorbody">
+     </tbody>
+  </table>
+  </section>
+  
+    <section id='third'>
+    </section>
+  
+    <section id='fourth'>
+    </section>
+  </div>
+  <script>
+         function student() {
+             var data = {
+         "usertype": "student",
+          "status": "pending",
+
+         }
+
+         const xhr = new XMLHttpRequest();
+         xhr.open("POST", "http://localhost:8080/listuser", true);
+         xhr.setRequestHeader("Content-Type", "application/json");
+         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+         xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+           if(JSON.parse(xhr.responseText).status === "list user") 
+           {
+            var a=JSON.parse(xhr.responseText);
+           for (let i = 0; i < a.users.length; i++)
+{
+  var tr=document.createElement("tr")
+  tr.innerHTML='<td>'+(i+1)+'</td><td>'+a.users[i].username+'</td><td>'+a.users[i].phonenumber+'</td><td class="actions"><button class="button">Approve</button><button class="button">reject</button></td>'
+  document.getElementById("studentbody").appendChild(tr)
+}
+
+           
+         } else {
+         alert("no request");
+         }
+            
+         }
+         }
+         xhr.send(JSON.stringify(data));    }
+
+         function conductor() {
+             var data = {
+         "usertype": "conductor",
+          "status": "pending",
+
+         }
+
+         const xhr = new XMLHttpRequest();
+         xhr.open("POST", "http://localhost:8080/listuser", true);
+         xhr.setRequestHeader("Content-Type", "application/json");
+         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+         xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+           if(JSON.parse(xhr.responseText).status === "list user") 
+           {
+            var a=JSON.parse(xhr.responseText);
+           for (let i = 0; i < a.users.length; i++)
+{
+  var tr=document.createElement("tr")
+  tr.innerHTML='<td>'+(i+1)+'</td><td>'+a.users[i].username+'</td><td>'+a.users[i].identitynumber+'</td><td class="actions"><button class="button">Approve</button><button class="button">reject</button></td>'
+  document.getElementById("conductorbody").appendChild(tr)
+}
+
+           
+         } else {
+         alert("no request");
+         }
+            
+         }
+         }
+         xhr.send(JSON.stringify(data));    }
+      </script>
+</body>
+</html>

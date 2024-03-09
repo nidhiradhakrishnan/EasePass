@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="studentapply.css">
+    <style>
+        header img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <div class="bg"></div>
+    <form id="form1">
+      
+
+        <div class="inputs"><br><br><br><br>
+
+            <h3>STUDENT DETAILS</h3>
+
+            <input type="text" name="" id="username" placeholder="username" readonly>
+            <input type="text" name="" id="dateofbirth" onfocus="(this.type='date')" placeholder="date of birth">
+            <input type="text" name="" id="phonenumber" placeholder="phone number">
+            <input type="text" name="" id="admissionnumber" placeholder="admission number">
+                <button type="button" id="next1" >Next</button>
+        </div>
+    </form>
+
+<form id="form2">
+       
+
+        <div class="inputs"><br><br><br><br>
+
+                        <h3>COLLEGE DETAILS</h3>
+
+            <input type="text" name="" id="collegeidcard" placeholder="college id card">
+            <input type="text" name="" id="educationalinstitution" placeholder="educational institution">
+            <input type="text" name="" id="courseofstudy" placeholder="course of study">
+            <input type="text" name="" id="academicyearofstudy" placeholder="academic year of study">            
+            <button type="button" id="back1">Back</button>
+                                <button type="button" id="next2">Next</button>
+
+</a>
+        </div>
+
+    </form>
+
+    <form id="form3">
+       
+
+        <div class="inputs"><br><br><br><br>
+
+            <h3>TRAVEL DETAILS</h3>
+
+            <input type="text" name="" id="startingpoint" placeholder="Departure point">
+            <input type="text" name="" id="endingpoint" placeholder="Destination">
+           <input type="text" id="startDate" placeholder="Start Date" onfocus="(this.type='date')" onChange="findEndDate()">
+           <input type="text" id="endDate"  placeholder="Expiration Date" readonly>
+            <button type="button" id="back2">Back</button>
+
+            <button type="button" id="rzp-button1" onclick="studentdetails()">submit </button>
+  
+</a>
+        </div>
+
+    </form>
+    <dvi class="step-row">
+            <div id="progress"></div>
+            <div class="step-col"><small>step 1</small></div>
+                    <div class="step-col"><small>step 2</small></div>
+            <div class="step-col"><small>step 3</small></div>
+
+
+        </dvi>
+
+</div>
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    
+    document.getElementById("username").value=localStorage.getItem("username");
+
+    var form1= document.getElementById("form1");
+    var form2= document.getElementById("form2");
+    var form3= document.getElementById("form3");
+
+    var next1= document.getElementById("next1");
+    var next2= document.getElementById("next2");
+    var back1= document.getElementById("back1");
+    var back2= document.getElementById("back2");
+
+         var progress= document.getElementById("progress");
+
+
+    next1.onclick= function () {
+        form1.style.left= "-450px";  
+                form2.style.left= "0px"; 
+        progress.style.width= "240px";
+
+          }
+          back1.onclick= function () {
+        form1.style.left= "0px";  
+                form2.style.left= "450px";
+                        progress.style.width= "120px";
+  
+
+          }
+          next2.onclick= function () {
+        form2.style.left= "-450px";  
+                form3.style.left= "0px";  
+                           progress.style.width= "360px";
+
+
+          }
+           back2.onclick= function () {
+        form2.style.left= "0px";  
+                form3.style.left= "450px";  
+                        progress.style.width= "240px";
+
+          }
+
+
+
+function findEndDate() {
+   let startDate = new Date(document.getElementById("startDate").value);
+  let endDate = new Date();
+  endDate.setDate(startDate.getDate() + 90);
+  document.getElementById("endDate").value=format(endDate);
+}
+
+function format(dateIn) {
+  var yyyy = dateIn.getFullYear();
+  var mm = dateIn.getMonth() + 1; // getMonth() is zero-based
+  var dd = dateIn.getDate();
+  return String( dd +"-"+ mm +"-"+yyyy); // Leading zeros for mm and dd
+}
+ function studentdetails() {
+        var data = {
+            "username": document.getElementById("username").value,
+            "phonenumber": document.getElementById("phonenumber").value,
+            "dateofbirth": document.getElementById("dateofbirth").value,
+            "admissionnumber": document.getElementById("admissionnumber").value,
+            "collegeidcard": document.getElementById("collegeidcard").value,                   
+            "educationalinstitution": document.getElementById("educationalinstitution").value ,                  
+            "courseofstudy": document.getElementById("courseofstudy").value  ,                 
+            "academicyearofstudy": document.getElementById("academicyearofstudy").value  ,                 
+            "startingpoint": document.getElementById("startingpoint").value     ,              
+            "endingpoint": document.getElementById("endingpoint").value       ,            
+            "startDate": document.getElementById("startDate").value      ,             
+            "endDate": document.getElementById("endDate").value                   
+                   
+             };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/apply", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status === "Invalid from and to") {
+                         alert("Invalid from and to");
+                    } else {
+                        alert("Do you want to proceed by paying the amount  "+response.fare);
+                        payment(response.fare)
+                    }
+                } else {
+                    alert("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        
+        xhr.send(JSON.stringify(data));
+    }
+
+
+
+
+
+function payment(fare){
+const xhr = new XMLHttpRequest();
+var amount= fare*100;
+const data = {
+    "fare": amount.toString(),
+    "currency": "INR",
+    "receipt": "qwsaq1",
+    "partial_payment": false
+}
+xhr.open("POST", "http://localhost:8080/orderid", true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+//xhr.setRequestHeader("Authorization", "Basic " + btoa("rzp_test_8FOoAcnh1nEyjc" + ":" + "ohTymlr9zcdldhryusMUjMXc"))
+
+xhr.onreadystatechange = () => {
+  // Call a function when the state changes.
+  if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    // Request finished. Do processing here.
+   
+var options = {
+    "key": "rzp_test_8FOoAcnh1nEyjc", // Enter the Key ID generated from the Dashboard
+    "amount": amount.toString(), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Ease Pass", //your business name
+    "description": "Test Transaction",
+    "image": "http://localhost:8080/LOGO-modified.png",
+    "order_id": JSON.parse(xhr.responseText).id,
+    "callback_url": "http://localhost:8080/studenthome",
+    "handler": function (response)
+    { 
+        window.location.replace("http://localhost:8080/studenthome");
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "", //your customer's name
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+};
+        xhr.send(JSON.stringify(data));
+}
+
+</script>
+
+</body>
+</html>

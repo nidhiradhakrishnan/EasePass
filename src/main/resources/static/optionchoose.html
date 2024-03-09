@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        /* Additional styles to make buttons square */
+        .button-square {
+            width: 130px; /* Adjust the width as needed */
+            height: 120px; /* Same height as width for square button */
+            padding: 5px; /* Remove padding to maintain square shape */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none; /* Remove default button border */
+        }
+
+        /* Style for the footer */
+        .choosecat {
+            background-color: #257fffaa6; /* Same as the button background color */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .choosecat p {
+            color: #fff; /* Text color for the footer */
+            margin: 0;
+        }
+
+        /* Hide button text */
+        .button-19 {
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app2">
+    <div class="bg"></div>
+    <form>
+        <header>
+            <img src="LOGO-modified.png">
+        </header>
+
+    	<div class="choosecat">
+        	<p>choose your category!</p>
+    	</div>
+        <div class="button-19 button-square" onClick="window.location.href='studentsignupform.html'" style="background-image: url('student.jpg');">
+            <button class="button-19" role="button">Student</button>
+        </div>
+
+        <div class="button-19 button-square" onClick="window.location.href='conductorsignupform.html'" style="background-image: url('conductor.jpg');">
+            <button class="button-19" role="button">Conductor</button>
+        </div>
+
+        <div class="inputs"><br><br></div>
+
+    </form>
+
+
+
+</div>
+
+</body>
+</html>

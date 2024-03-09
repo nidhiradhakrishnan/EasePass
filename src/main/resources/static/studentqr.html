@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="main.css">
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
+    <style>
+        /* Additional styles to make buttons square */
+   
+        h3 {
+  margin-top: 5px;
+    font-size:15px; color:white; word-spacing:1px; font-weight:normal; letter-spacing:2px;
+    text-transform: uppercase; font-family:"Raleway", sans-serif; font-weight:500;
+
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-template-rows: 27px 0;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="app2">
+    <div class="bg"></div>
+    <form>
+        <header>
+       <h3>QR CODE</h3>
+        </header>
+        
+
+<main>
+        <div id="qrcode"></div>
+    </main>
+     
+    <script>
+        var qrcode = new QRCode("qrcode",localStorage.getItem("username"));
+    </script>
+    	
+
+    </form>
+
+
+
+</div>
+<script>
+    function redirect() {
+        window.location.href = 'studentapplicationform2.html';
+    }
+</script>
+</body>
+</html>
