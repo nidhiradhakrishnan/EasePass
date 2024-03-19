@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByUsername(
         String username);
+    List<Student> findByUsernameAndStatus(
+        String username,String status);
+    List<Student> findByStatus(String status);
+
 
 
                      

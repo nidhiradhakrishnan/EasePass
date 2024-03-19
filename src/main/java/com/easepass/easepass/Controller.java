@@ -34,7 +34,10 @@ import java.time.ZoneId;
 
  
 
-
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 
@@ -52,6 +55,8 @@ public class Controller {
    private TravelRepository travelRepository;
 @Autowired
    private PassRepository passRepository;
+   @Autowired
+   private IdcardRepository idcardRepository;
 
 
 
@@ -102,7 +107,20 @@ ModelAndView modelAndView = new ModelAndView();
 @RequestMapping("/studentqr")
 public ModelAndView studentqr() {
 ModelAndView modelAndView = new ModelAndView();
-   modelAndView.setViewName("studentapply.html");
+   modelAndView.setViewName("studentqr.html");
+   return modelAndView;
+}
+
+@RequestMapping("/studenttrack")
+public ModelAndView studenttrack() {
+ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("studenttrack.html");
+   return modelAndView;
+}
+@RequestMapping("/studentaccount")
+public ModelAndView studentaccount() {
+ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("studentaccount.html");
    return modelAndView;
 }
 
@@ -117,6 +135,13 @@ ModelAndView modelAndView = new ModelAndView();
 public ModelAndView conductorhome() {
 ModelAndView modelAndView = new ModelAndView();
    modelAndView.setViewName("conductorhome.html");
+   return modelAndView;
+}
+
+@RequestMapping("/conductoraccount")
+public ModelAndView conductoraccount() {
+ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("conductoraccount.html");
    return modelAndView;
 }
 
@@ -149,6 +174,15 @@ ModelAndView modelAndView = new ModelAndView();
    modelAndView.setViewName("conductorqr.html");
    return modelAndView;
 }
+
+@RequestMapping("/upload")
+public ModelAndView upload() {
+ModelAndView modelAndView = new ModelAndView();
+   modelAndView.setViewName("image.html");
+   return modelAndView;
+}
+
+
 
 
 
@@ -187,9 +221,9 @@ return new ResponseEntity<>(order.toString(), HttpStatus.OK);
            produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<?> checkLogin(HttpEntity<String> httpEntity) {
       JSONObject requestObj = new JSONObject(httpEntity.getBody());
-      List<User> userList =  userRepository.findByUsernameAndPassword(
+      List<User> userList =  userRepository.findByUsernameAndPasswordAndStatus(
                              requestObj.getString("username"), 
-                             requestObj.getString("password"));
+                             requestObj.getString("password"),"approved");
 
       JSONObject responseObj = new JSONObject();
       if(null == userList || userList.size()<1) {
@@ -267,26 +301,64 @@ ary.put(jsonObj);
       }
       return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
    }
+
+//conductoraccount
+
+
+
+   @CrossOrigin(origins = "*")
+   @PostMapping(path="/conductoraccountdetails", consumes = MediaType.APPLICATION_JSON_VALUE, 
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<?> conductoraccountdetails(HttpEntity<String> httpEntity) 
+ {
+      JSONObject requestObj = new JSONObject(httpEntity.getBody());
+      List<User> userList =  userRepository.findByUsername(
+                             requestObj.getString("username"));
+
+      JSONObject responseObj = new JSONObject();
+      if(null == userList || userList.size()<1) {
+         //means no data
+         responseObj.put("status","invalid applicant");
+      } else {
+         JSONArray ary = new JSONArray();
+User userObj = userList.get(0);
+responseObj.put("username",userObj.username);
+responseObj.put("phonenumber",userObj.phonenumber);
+responseObj.put("identitynumber",userObj.identitynumber);
+
+         responseObj.put("status","list user");
+
+      }
+      return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+   }
+
+
 //apply
 @CrossOrigin(origins = "*")
    @PostMapping(path="/apply", 
     consumes = MediaType.APPLICATION_JSON_VALUE, 
       produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<?> apply(HttpEntity<String> httpEntity) {
+    //  String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
       JSONObject requestObj = new JSONObject(httpEntity.getBody());
       Student student=new Student(
          requestObj.getString("username"),
          requestObj.getString("dateofbirth"),
          requestObj.getString("phonenumber"),
          requestObj.getString("admissionnumber"),
-         requestObj.getString("collegeidcard"),
+      //   requestObj.getString("collegeidcard"),
          requestObj.getString("educationalinstitution"),
          requestObj.getString("courseofstudy"),
          requestObj.getString("academicyearofstudy"),
          requestObj.getString("startingpoint"),
          requestObj.getString("endingpoint"),
          requestObj.getString("startDate"),
-         requestObj.getString("endDate"));
+         requestObj.getString("endDate"),
+         "pending"
+        // fileName
+         //ile.getContentType(), file.getBytes()
+);
 
 
             JSONObject responseObj = new JSONObject();
@@ -322,8 +394,8 @@ ary.put(jsonObj);
            produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<?> studentlistdetails(HttpEntity<String> httpEntity) {
       JSONObject requestObj = new JSONObject(httpEntity.getBody());
-      List<Student> studentList =  studentRepository.findByUsername(
-                             requestObj.getString("username"));
+      List<Student> studentList =  studentRepository.findByUsernameAndStatus(
+                             requestObj.getString("username"),"approved");
 
       JSONObject responseObj = new JSONObject();
       if(null == studentList || studentList.size()<1) {
@@ -336,7 +408,7 @@ ary.put(jsonObj);
                   responseObj.put("username",studentList.get(0).username);
                   responseObj.put("phonenumber",studentList.get(0).phonenumber);
                   responseObj.put("admissionnumber",studentList.get(0).admissionnumber);
-                  responseObj.put("collegeidcard",studentList.get(0).collegeidcard);
+               //   responseObj.put("collegeidcard",studentList.get(0).collegeidcard);
                   responseObj.put("educationalinstitution",studentList.get(0).educationalinstitution);
                   responseObj.put("courseofstudy",studentList.get(0).courseofstudy);
                   responseObj.put("academicyearofstudy",studentList.get(0).academicyearofstudy);
@@ -450,8 +522,206 @@ ary.put(jsonObj);
 
 
 
+//admin application
 
 
+
+   @CrossOrigin(origins = "*")
+   @PostMapping(path="/studentapplication", consumes = MediaType.APPLICATION_JSON_VALUE, 
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<?> studentapplication(HttpEntity<String> httpEntity) {
+      JSONObject requestObj = new JSONObject(httpEntity.getBody());
+      List<Student> studentList =  studentRepository.findByStatus(
+                             requestObj.getString("status"));
+
+
+  JSONObject responseObj = new JSONObject();
+      if(null == studentList || studentList.size()<1) {
+         //means no data
+         responseObj.put("status","No pending request");
+      } else {
+         JSONArray ary = new JSONArray();
+
+for(int i=0;i < studentList.size();i++) {
+Student userObj = studentList.get(i);
+JSONObject jsonObj = new JSONObject();
+jsonObj.put("username",userObj.username);
+jsonObj.put("educationalinstitution",userObj.educationalinstitution);
+jsonObj.put("admissionnumber",userObj.admissionnumber);
+jsonObj.put("startingpoint",userObj.startingpoint);
+jsonObj.put("endingpoint",userObj.endingpoint);
+jsonObj.put("startDate",userObj.startdate);
+ary.put(jsonObj);
+}
+         responseObj.put("status","list user");
+                  responseObj.put("application",ary);
+
+
+   }
+
+
+      
+      return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+   }
+
+
+
+//admin easepass
+ @CrossOrigin(origins = "*")
+   @PostMapping(path="/admineasepass", consumes = MediaType.APPLICATION_JSON_VALUE, 
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<?> admineasepass(HttpEntity<String> httpEntity) {
+      JSONObject requestObj = new JSONObject(httpEntity.getBody());
+       List<Pass> passList;
+      if (requestObj.getString("username").equals("all"))
+       {
+          passList =  passRepository.findAll();
+  
+      }
+      else
+      {
+      passList =  passRepository.findByStudent(
+                             requestObj.getString("username"));}
+
+
+  JSONObject responseObj = new JSONObject();
+      if(null == passList || passList.size()<1) {
+         //means no data
+         responseObj.put("status","No pending request");
+      } else {
+         JSONArray ary = new JSONArray();
+
+for(int i=0;i < passList.size();i++) {
+Pass userObj = passList.get(i);
+JSONObject jsonObj = new JSONObject();
+jsonObj.put("username",userObj.student);
+jsonObj.put("onwardtime",userObj.onwardtime);
+jsonObj.put("conductoron",userObj.conductoron);
+jsonObj.put("returntime",userObj.returntime);
+jsonObj.put("conductorre",userObj.conductorre);
+ary.put(jsonObj);
+}
+         responseObj.put("status","list user");
+                  responseObj.put("easepass",ary);
+
+
+   }
+
+
+      
+      return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+   }
+
+
+
+//adminapproveuser
+
+@CrossOrigin(origins = "*")
+   @PostMapping(path="/adminapprove", consumes = MediaType.APPLICATION_JSON_VALUE, 
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<?> adminapprove(HttpEntity<String> httpEntity) {
+      JSONObject requestObj = new JSONObject(httpEntity.getBody());
+      List<User> userList =  userRepository.findByUsername(
+                             requestObj.getString("username"));
+
+
+  JSONObject responseObj = new JSONObject();
+      if(null == userList || userList.size()<1) {
+         //means no data
+         responseObj.put("status","No pending request");
+      } else {
+         JSONArray ary = new JSONArray();
+       User row = userList.get(0);
+      row.status= requestObj.getString("status");
+      
+     try {
+      userRepository.save(row);
+      responseObj.put("status","approved");
+
+      } catch(Exception e){
+         responseObj.put("status",e.getMessage());
+
+      }
+
+
+   }
+
+
+      
+      return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+   }
+
+
+
+//adminapprove application
+
+   @CrossOrigin(origins = "*")
+   @PostMapping(path="/adminapproveapplication", consumes = MediaType.APPLICATION_JSON_VALUE, 
+           produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<?> adminapproveapplication(HttpEntity<String> httpEntity) {
+      JSONObject requestObj = new JSONObject(httpEntity.getBody());
+      List<Student> studentList =  studentRepository.findByUsername(
+                             requestObj.getString("username"));
+
+
+  JSONObject responseObj = new JSONObject();
+      if(null == studentList || studentList.size()<1) {
+         //means no data
+         responseObj.put("status","No pending request");
+      } else {
+         JSONArray ary = new JSONArray();
+       Student row = studentList.get(0);
+      row.status= requestObj.getString("status");
+      
+     try {
+      studentRepository.save(row);
+      responseObj.put("status","approved");
+
+      } catch(Exception e){
+         responseObj.put("status",e.getMessage());
+
+      }
+
+
+   }
+
+
+      
+      return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+   }
+
+
+
+
+//upload
+
+   @CrossOrigin(origins = "*")
+   @PostMapping("/uploadFile")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+       String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+
+            Idcard dbFile = new Idcard("gokul",file.getBytes(),fileName,file.getContentType());
+
+            Idcard image = idcardRepository.save(dbFile);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/downloadFile/")
+            .path(image.filename)
+            .toUriString();
+
+
+        } catch (Exception ex) {
+            //throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
+        }
+              return new ResponseEntity<>(responseObj.toString(), HttpStatus.OK);
+
+    }
 
 
 

@@ -13,7 +13,9 @@ public interface PassRepository extends JpaRepository<Pass, Long> {
 
     List<Pass> findByStudentAndOnwardtimeAfter(String student,Date onwardtime);
         List<Pass> findByStudentAndReturntimeAfter(String student,Date returntime);
-
+        List<Pass> findByStudent(String student);
+        List<Pass> findByOnwardtimeAfter(Date onwardtime);
+        List<Pass> findByReturntimeAfter(Date returntime);
 
 
 
