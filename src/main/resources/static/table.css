@@ -1,103 +1,168 @@
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
-  color: #3b3b3b;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  background: #2b2b2b;
-}
-
-@media screen and (max-width: 580px) {
-  body {
-    font-size: 16px;
-    line-height: 22px;
-  }
-}
-
-.wrapper {
-  margin: 0 auto;
-  padding: 40px;
-  max-width: 800px;
-}
-
-.table {
-  margin: 0 700px 400px;
+#student {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
   width: 100%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  display: table;
+  margin-left: 345px;
+    margin-right: 25px;
 }
 
-@media screen and (max-width: 580px) {
-  .table {
-    display: block;
-  }
+
+#student td, #student th {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-.row {
-  display: table-row;
-  background: #f6f6f6;
+#student tr:nth-child(even){background-color: #f2f2f2;}
+
+#student tr:hover {background-color: #ddd;}
+
+#student th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #257aa6;
+  color: white;
 }
 
-.row:nth-of-type(odd) {
-  background: #e9e9e9;
+
+#conductor {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 345px;
+    margin-right: 25px;
 }
 
-.row.header {
-  font-weight: 900;
-  color: #ffffff;
-  background: #ea6153;
+
+#conductor td, #conductor th {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-.row.green {
-  background: #27ae60;
+#conductor tr:nth-child(even){background-color: #f2f2f2;}
+
+#conductor tr:hover {background-color: #ddd;}
+
+#conductor th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #257aa6;
+  color: white;
 }
 
-.row.blue {
-  background: #2980b9;
+#easepass {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 345px;
+    margin-right: 25px;
 }
 
-@media screen and (max-width: 580px) {
-  .row {
-    padding: 14px 0 7px;
-    display: block;
-  }
 
-  .row.header {
-    padding: 0;
-    height: 6px;
-  }
-
-  .row.header .cell {
-    display: none;
-  }
-
-  .cell {
-    margin-bottom: 10px;
-  }
-
-  .cell:before {
-    margin-bottom: 3px;
-    content: attr(data-title);
-    min-width: 98px;
-    font-size: 10px;
-    line-height: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #969696;
-    display: block;
-  }
+#easepass td, #easepass th {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-.cell {
-  padding: 12px 110px;
-  display: table-cell;
+#easepass tr:nth-child(even){background-color: #f2f2f2;}
+
+#easepass tr:hover {background-color: #ddd;}
+
+#easepass th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #257aa6;
+  color: white;
 }
 
-@media screen and (max-width: 580px) {
-  .cell {
-    padding: 2px 16px;
-    display: block;
-  }
+
+#application {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 345px;
+    margin-right: 25px;
 }
+
+
+#application td, #application th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#application tr:nth-child(even){background-color: #f2f2f2;}
+
+#application tr:hover {background-color: #ddd;}
+
+#application th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #257aa6;
+  color: white;
+}
+
+
+
+
+
+
+#track {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 8px;
+}
+
+
+#track td, #track th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#track tr:nth-child(even){background-color: #257aa6;}
+
+#track tr:hover {background-color: #ddd;}
+
+#track th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #257aa6;
+  color: white;
+}
+
+
+.accept{
+  width: 90px;
+  background-color: #04AA6D;
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-left: 12px;
+    margin-right: 12px;
+  border-radius: 8px;}
+
+    .reject{
+      width: 90px;
+  background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-left: 12px;
+    margin-right: 12px;
+  border-radius: 8px;}

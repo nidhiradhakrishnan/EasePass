@@ -83,7 +83,7 @@
 	    margin: 1em auto;
 	  }
 
-	form input {
+	form input,select{
 	    width: 100%;
 	    padding: 13px 15px;
 	    margin: 0.7em auto;
@@ -94,6 +94,10 @@
 	    outline: none;
 	    color: #fff;
 	}
+	.option-background option {
+    background-color: #257aa6;
+    color: white; /* Set text color to contrast with the background */
+}
 	input::placeholder {
 	    color: #fff;
 	    font-size: 13px;

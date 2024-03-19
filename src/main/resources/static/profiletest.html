@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="studentapply.css">
+        <link rel="stylesheet" href="profile.css">
+
+    <style>
+        header img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+
+<!-- Student Profile -->
+<div class="student-profile py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent text-center">
+           <center> <img class="profile_img" src="https://placeimg.com/640/480/arch/any" alt=""></center>
+            <h3 id="username"></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent border-0">
+          </div>
+          <div class="card-body pt-0">
+            <table class="table table-bordered">
+              <tr>
+                <th width="50%">Educational Institution</th>
+                <td width="2%">:</td>
+                <td id="educationalinstitution"></td>
+              </tr>
+              <tr>
+                <th width="30%">Application Date</th>
+                <td width="2%">:</td>
+                <td id="startDate"></td>
+              </tr>
+              <tr>
+                <th width="30%">Expiration Date</th>
+                <td width="2%">:</td>
+                <td id="endDate"></td>
+              </tr>
+               <tr>
+                <th width="30%">From</th>
+                <td width="2%">:</td>
+                <td id="startingpoint"></td>
+              </tr>
+              <tr>
+                <th width="30%">To</th>
+                <td width="2%">:</td>
+                <td id="endingpoint"></td>
+              </tr>
+              
+                
+              
+            <tr>
+                <th width="30%">Course of study</th>
+                <td width="2%">:</td>
+                <td id="courseofstudy"></td>
+              </tr>
+              <tr>
+                <th width="30%">Academic Year</th>
+                <td width="2%">:</td>
+                <td id="academicyearofstudy"></td>
+              </tr>
+              <tr>
+                <th width="30%">Admission no</th>
+                <td width="2%">:</td>
+                <td id="admissionnumber"></td>
+              </tr>
+             <tr>
+                <th width="30%">Date of birth</th>
+                <td width="2%">:</td>
+                <td id="dateofbirth"></td>
+              </tr>
+              <tr>
+                <th width="30%">Contact no</th>
+                <td width="2%">:</td>
+                <td id="phonenumber"> </td>
+              </tr>
+              
+              
+              
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+<script>
+    
+    
+
+var data = 
+        {   
+            "username":localStorage.getItem("username")
+             };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/studentlistdetails", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status ==="invalid applicant") {
+                         alert("Invalid applicant");
+                    } else 
+                    {
+
+           document.getElementById("username").value=response.username;
+           document.getElementById("dateofbirth").value=response.dateofbirth;
+          document.getElementById("phonenumber").value=response.phonenumber;
+           document.getElementById("admissionnumber").value=response.admissionnumber;
+
+           document.getElementById("educationalinstitution").value=response.educationalinstitution;
+           document.getElementById("courseofstudy").value=response.courseofstudy;
+          document.getElementById("academicyearofstudy").value=response.academicyearofstudy;
+
+           document.getElementById("startingpoint").value=response.startingpoint;
+           document.getElementById("endingpoint").value=response.endingpoint;
+           document.getElementById("startDate").value=response.startDate;
+           document.getElementById("endDate").value=response.endDate;
+
+                    }
+                } else {
+                    alert("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        
+        xhr.send(JSON.stringify(data));
+
+
+
+
+</script>
+
+</body>
+</html>

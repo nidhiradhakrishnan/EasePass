@@ -1,5 +1,8 @@
 <html>
 <head>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="admin.css">
   <link rel="stylesheet" type="text/css" href="table.css">
@@ -42,27 +45,28 @@
   <nav><br><br>
     <a href="#first" onclick="student()"><i class="fas fa-user-graduate"></i> Student</a>    
     <a href="#second" onclick="conductor()"><i class="fas fa-bus"></i> Conductor</a>
-    <a href="#third" onclick="apply()"><i class="fas fa-file-alt"></i> Application</a>
-    <a href="#four" onclick="account()"><i class="fas fa-user-circle"></i> Account</a>
+    <a href="#third" onclick="application()"><i class="fas fa-file-alt"></i> Application</a>
+    <a href="#four" onclick="easepass()"><i class="fas fa-user-circle"></i> Ease pass</a>
+
   </nav>
   
   <div class='container'> 
+<img src="adminbg.jpg" alt="Your Logo" class="logo" style="
+    margin-left: 500px;
+    margin-top: 200px;
+    width: 800px;
+    height: 600px;">    
     <section id='first'>
-      <table>
+      <table id="student">
+
     <thead>
-        <div class="table">
-    
-    <div class="row header blue">
-      <div class="cell">
-      User_name
-      </div>
-      <div class="cell">
-        phone_number
-      </div>
-      <div class="cell">
-         Action
-      </div>
-    </div>
+        <tr>
+            <th>S.No</th>
+            <th>Username</th>
+            <th>Phone number</th>
+
+            <th>Action</th>
+        </tr>
     </thead>
      <tbody id="studentbody">
      </tbody>
@@ -70,7 +74,7 @@
     </section>
   
     <section id='second'>
-      <table>
+      <table id="conductor">
     <thead>
         <tr>
             <th>S.No</th>
@@ -83,79 +87,359 @@
      </tbody>
   </table>
   </section>
-  
-    <section id='third'>
+
+   <section id='third'>
+    <table id="application">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Username</th>
+            <th>Educational Institution</th>
+            <th>Admission no</th>
+            <th>From</th>
+             <th>To</th>
+            <th>Application date</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+     <tbody id="applicationbody">
+     </tbody>
+  </table>
+
     </section>
   
-    <section id='fourth'>
+    <section id='four'>
+      
+ <table id="easepass">
+    <thead>
+       <tr>
+          <th>S.No</th>
+            <th>Username</th>
+            <th>Onward details</th>
+            <th>Onward Conductor</th>
+             <th>Return details</th>
+            <th>Return Conductor</th>
+        </tr>
+    </thead>
+     <tbody id="easepassbody">
+     </tbody>
+  </table>
+
+
     </section>
+  
+   
   </div>
   <script>
-         function student() {
-             var data = {
+
+    //student
+
+ function student() {
+     document.getElementById("studentbody").innerHTML = ""
+     var data = {
          "usertype": "student",
-          "status": "pending",
+         "status": "pending",
 
-         }
+     }
 
-         const xhr = new XMLHttpRequest();
-         xhr.open("POST", "http://localhost:8080/listuser", true);
-         xhr.setRequestHeader("Content-Type", "application/json");
-         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-         xhr.onreadystatechange = () => {
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/listuser", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
              // xhr.responseText contain the response from server
-           if(JSON.parse(xhr.responseText).status === "list user") 
-           {
-            var a=JSON.parse(xhr.responseText);
-           for (let i = 0; i < a.users.length; i++)
-{
-  var tr=document.createElement("tr")
-  tr.innerHTML='<td>'+(i+1)+'</td><td>'+a.users[i].username+'</td><td>'+a.users[i].phonenumber+'</td><td class="actions"><button class="button">Approve</button><button class="button">reject</button></td>'
-  document.getElementById("studentbody").appendChild(tr)
-}
+             if (JSON.parse(xhr.responseText).status === "list user") {
+                 document.getElementById("studentbody").innerHTML = ""
 
-           
-         } else {
-         alert("no request");
-         }
-            
-         }
-         }
-         xhr.send(JSON.stringify(data));    }
+                 var a = JSON.parse(xhr.responseText);
+                 for (let i = 0; i < a.users.length; i++) {
+                     var tr = document.createElement("tr")
+                     tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + a.users[i].username + '</td><td>' + a.users[i].phonenumber + '</td><td class="actions"><button name='+a.users[i].username+' class="accept" onclick="approve(this)">Approve</button><button name='+a.users[i].username+' class="reject" onclick="reject(this)">reject</button></td>'
+                     document.getElementById("studentbody").appendChild(tr)
+                 }
 
-         function conductor() {
-             var data = {
+
+             } else {
+
+   swal("No pending request!");
+
+             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
+ }
+
+ //conductor
+
+ function conductor() {
+     document.getElementById("conductorbody").innerHTML = ""
+
+     var data = {
          "usertype": "conductor",
-          "status": "pending",
+         "status": "pending",
 
-         }
+     }
 
-         const xhr = new XMLHttpRequest();
-         xhr.open("POST", "http://localhost:8080/listuser", true);
-         xhr.setRequestHeader("Content-Type", "application/json");
-         xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-         xhr.onreadystatechange = () => {
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/listuser", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
              // xhr.responseText contain the response from server
-           if(JSON.parse(xhr.responseText).status === "list user") 
-           {
-            var a=JSON.parse(xhr.responseText);
-           for (let i = 0; i < a.users.length; i++)
+             if (JSON.parse(xhr.responseText).status === "list user") {
+                 document.getElementById("conductorbody").innerHTML = ""
+
+                 var a = JSON.parse(xhr.responseText);
+                 for (let i = 0; i < a.users.length; i++) {
+                     var tr = document.createElement("tr")
+                     tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + a.users[i].username + '</td><td>' + a.users[i].identitynumber +
+                         '</td><td class="actions"><button name='+a.users[i].username+' class="accept" onclick="approve(this)">Approve</button><button name='+a.users[i].username+' class="reject" onclick="reject(this)">reject</button></td>'
+                     document.getElementById("conductorbody").appendChild(tr)
+                 }
+
+
+             } else {
+swal("No pending request!");             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
+ }
+
+ //application
+
+ function application() {
+     document.getElementById("applicationbody").innerHTML = ""
+
+     var data = {
+         "status": "pending",
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/studentapplication", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "list user") {
+                 document.getElementById("applicationbody").innerHTML = ""
+
+                 var a = JSON.parse(xhr.responseText);
+                 for (let i = 0; i < a.application.length; i++) {
+
+                     var tr = document.createElement("tr")
+                     tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + a.application[i].username + '</td><td>' + a.application[i].educationalinstitution + '</td><td>' + a.application[i].admissionnumber + '</td><td>' + a.application[i].startingpoint + '</td><td>' + a.application[i].endingpoint + '</td><td>' + a.application[i].startDate + '</td><td class="actions"><button name='+a.application[i].username+' class="accept" onclick="approveapp(this)">Approve</button><button name='+a.application[i].username+' class="reject" onclick="rejectapp(this)">reject</button></td>'
+                     document.getElementById("applicationbody").appendChild(tr)
+                 }
+
+
+             } else {
+swal("No pending request!");             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
+
+ }
+
+
+ //easepass
+
+
+
+ function easepass() {
+     document.getElementById("easepassbody").innerHTML = ""
+
+     var data = {
+         "username":"all",
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/admineasepass", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "list user") {
+                 document.getElementById("easepassbody").innerHTML = ""
+
+                 var a = JSON.parse(xhr.responseText);
+                 for (let i = 0; i < a.easepass.length; i++) {
+
+                     var tr = document.createElement("tr")
+                     tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + a.easepass[i].username + '</td><td>' + a.easepass[i].onwardtime + '</td><td>' + a.easepass[i].conductoron + '</td><td>' + a.easepass[i].returntime + '</td><td>' + a.easepass[i].conductorre + '</td>'
+                     document.getElementById("easepassbody").appendChild(tr)
+                 }
+
+
+             } else {
+swal("No pending request!");             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
+
+ }
+
+
+function approve(button) 
 {
-  var tr=document.createElement("tr")
-  tr.innerHTML='<td>'+(i+1)+'</td><td>'+a.users[i].username+'</td><td>'+a.users[i].identitynumber+'</td><td class="actions"><button class="button">Approve</button><button class="button">reject</button></td>'
-  document.getElementById("conductorbody").appendChild(tr)
+
+
+     var data = {
+
+         "username": button.name,
+         "status":"approved"
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/adminapprove", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "approved") {
+
+                window.location.href = 'adminhome.html';
+
+
+
+             } else {
+swal("No pending request!");             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
 }
 
-           
-         } else {
-         alert("no request");
+//adminreject
+function reject(button) 
+{
+
+
+     var data = {
+         "username": button.name,
+         "status":"reject"
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/adminapprove", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "approved") {
+
+                window.location.href = 'adminhome.html';
+
+
+
+             } else {
+
+              
+swal("No pending request!");             }
+
          }
-            
+     }
+     xhr.send(JSON.stringify(data));
+
+
+
+
+
+}
+
+
+
+//admin approve application
+
+function approveapp(button) 
+{
+
+
+     var data = {
+         "username": button.name,
+         "status":"approved"
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/adminapproveapplication", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "approved") {
+
+                window.location.href = 'adminhome.html';
+
+
+
+             } else {
+                 alert("no pending request");
+             }
+
          }
+     }
+     xhr.send(JSON.stringify(data));
+
+
+
+
+
+}
+
+//admin reject application
+
+function rejectapp(button) 
+{
+
+
+     var data = {
+         "username": button.name,
+         "status":"reject"
+
+     }
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/adminapproveapplication", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "approved") {
+
+                window.location.href = 'adminhome.html';
+
+
+
+             } else {
+                 alert("no pending request");
+             }
+
          }
-         xhr.send(JSON.stringify(data));    }
-      </script>
+     }
+     xhr.send(JSON.stringify(data));
+
+
+
+
+
+}
+</script>
 </body>
 </html>

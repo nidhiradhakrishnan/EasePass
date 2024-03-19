@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="studentapply.css">
+        <link rel="stylesheet" href="profile.css">
+
+    <style>
+        header img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+<div class="app2">
+    <div class="bg"></div>
+    <form>
+        <header>
+               <img src="LOGO-modified.png" style="
+    width: 200px;
+    height: 200px;">
+
+        </header>
+
+        <div class="choosecat">
+        </div>
+
+<!-- Student Profile -->
+<div class="student-profile py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent text-center">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent border-0">
+          </div>
+          <div class="card-body pt-0">
+            <table class="table table-bordered">
+              <tr>
+                <th width="50%">User name</th>
+                <td width="2%">:</td>
+                <td id="username"></td>
+              </tr><br>
+              <tr>
+                <th width="30%">Contact number</th>
+                <td width="2%">:</td>
+                <td id="phonenumber"></td>
+              </tr><br>
+              <tr>
+                <th width="30%">Identity number</th>
+                <td width="2%">:</td>
+                <td id="identitynumber"></td>
+              </tr>
+              
+              
+    
+              
+              
+            </table><br>
+            <center><button type="button" id="back2" onclick="redirect()">Log out </button></center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+<script>
+    
+    
+
+var data = 
+        {   
+            "username":localStorage.getItem("username")
+             };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/conductoraccountdetails", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status ==="invalid applicant") {
+                         alert("Invalid applicant");
+                    } else 
+                    {
+
+           document.getElementById("username").innerHTML=response.username;
+                     document.getElementById("phonenumber").innerHTML=response.phonenumber;
+
+          document.getElementById("identitynumber").innerHTML=response.identitynumber;
+
+                    }
+                } else {
+                    alert("Request failed with status: " + xhr.status);
+                }
+            }
+        };
+        
+        xhr.send(JSON.stringify(data));
+
+
+
+ function redirect() {
+        window.location.href = '/';
+    }
+</script>
+
+</body>
+</html>

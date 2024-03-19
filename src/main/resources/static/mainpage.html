@@ -1,6 +1,9 @@
 <html>
    <body>
       <link rel="stylesheet" href="main.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+s
       <div class="app">
          <div class="bg"></div>
          <form>
@@ -12,7 +15,7 @@
                <input type="text" id="username" name="username" placeholder="username">
                <input type="password" id="password" name="password" placeholder="password">
                <button type="button" onclick="redirect()">Login</button>
-               <p>Don't have an account? <a href="optionchoose.html">Sign Up</a></p>
+               <p>Don't have an account? <a href="optionchoose">Sign Up</a></p>
             </div>
          </form>
       </div>
@@ -24,7 +27,7 @@
 
          }
          const xhr = new XMLHttpRequest();
-         xhr.open("POST", "http://localhost:8080/checkLogin", true);
+         xhr.open("POST", "/checkLogin", true);
          xhr.setRequestHeader("Content-Type", "application/json");
          xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
          xhr.onreadystatechange = () => {
@@ -37,14 +40,20 @@
           window.location.pathname= "/studenthome";
 
             }
-         else
+         else if(JSON.parse(xhr.responseText).usertype=="conductor") 
          {
          localStorage.setItem("username",document.getElementById("username").value);
 
          window.location.pathname= "/conductorhome";
          }
+         else{
+         localStorage.setItem("username",document.getElementById("username").value);
+
+         window.location.pathname= "/adminhome";
+         }
          } else {
-         alert("wrong username or password");
+
+            swal("wrong username or password!");
          }
             
          }

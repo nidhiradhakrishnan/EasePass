@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="studentapply.css">
+        <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" type="text/css" href="table.css">
+
+    <style>
+        header img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+
+<!-- Student Profile -->
+<div class="student-profile py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent text-center">
+           <center> <img class="profile_img" src="https://placeimg.com/640/480/arch/any" alt=""></center>
+          <center> <h3>Travel details</h3></center> 
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-transparent border-0">
+          </div>
+          <div class="card-body pt-0">
+            <table id="track">
+                  <thead>
+<tr>
+                <th width="15%">SI NO</th>
+
+                <th width="42%">Onward travel</th>
+                <th width="42%">Return travel </th>
+              </tr></thead>
+              <tbody id="easepassbody">
+     </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+<script>
+    
+    
+
+var data = 
+        {   
+            "username":localStorage.getItem("username")
+             };
+
+       document.getElementById("easepassbody").innerHTML = ""
+
+     const xhr = new XMLHttpRequest();
+     xhr.open("POST", "/admineasepass", true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhr.onreadystatechange = () => {
+         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+             // xhr.responseText contain the response from server
+             if (JSON.parse(xhr.responseText).status === "list user") {
+                 document.getElementById("easepassbody").innerHTML = ""
+
+                 var a = JSON.parse(xhr.responseText);
+                 for (let i = 0; i < a.easepass.length; i++) {
+
+                     var tr = document.createElement("tr")
+                     tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + a.easepass[i].onwardtime + '</td><td>' + a.easepass[i].returntime + '</td><td>'
+                     document.getElementById("easepassbody").appendChild(tr)
+                 }
+
+
+             } else {
+swal("No pending request!");             }
+
+         }
+     }
+     xhr.send(JSON.stringify(data));
+
+
+
+
+
+</script>
+
+</body>
+</html>

@@ -15,6 +15,7 @@
 
 <div class="app">
     <div class="bg"></div>
+
     <form id="form1">
       
 
@@ -26,7 +27,7 @@
             <input type="text" name="" id="dateofbirth" onfocus="(this.type='date')" placeholder="date of birth">
             <input type="text" name="" id="phonenumber" placeholder="phone number">
             <input type="text" name="" id="admissionnumber" placeholder="admission number">
-                <button type="button" id="next1" >Next</button>
+            <button type="button" id="next1" >Next</button>
         </div>
     </form>
 
@@ -37,11 +38,30 @@
 
                         <h3>COLLEGE DETAILS</h3>
 
-            <input type="text" name="" id="collegeidcard" placeholder="college id card">
-            <input type="text" name="" id="educationalinstitution" placeholder="educational institution">
-            <input type="text" name="" id="courseofstudy" placeholder="course of study">
-            <input type="text" name="" id="academicyearofstudy" placeholder="academic year of study">            
-            <button type="button" id="back1">Back</button>
+<!--<input type="file" name="file" id="file" accept="image/*" placeholder="Upload college ID card">-->
+            <select name="educationalinstitution" id="educationalinstitution" class="option-background">
+                            <option value="">Select educational institution </option>
+
+            <option value="Union Christian College, Aluva">Union Christian College, Aluva</option>
+            </select>
+            <select name="courseofstudy" id="courseofstudy" class="option-background">
+            <option value="">Select course of study</option>
+            <option value="BA English">BA English</option>
+            <option value="BA Malayalam">BA Malayalam</option>
+            <option value="BSc Physics">BSc Physics</option>
+            <option value="BSc Chemistry">BSc Chemistry</option>
+            <option value="BSc Zoology">BSc Zoology</option>
+            <option value="BSc Mathematics">BSc Mathematics</option>
+            <option value="BSc Computer Science">BSc Computer Science</option>
+            </select>            
+<select name="academicyearofstudy" id="academicyearofstudy" class="option-background">
+                                <option value="">Select academic year of study </option>
+
+    <option value="1st Year">1st Year</option>
+    <option value="2nd Year">2nd Year</option>
+    <option value="3rd Year">3rd Year</option>
+</select>            
+<button type="button" id="back1">Back</button>
                                 <button type="button" id="next2">Next</button>
 
 </a>
@@ -56,26 +76,39 @@
 
             <h3>TRAVEL DETAILS</h3>
 
-            <input type="text" name="" id="startingpoint" placeholder="Departure point">
-            <input type="text" name="" id="endingpoint" placeholder="Destination">
-           <input type="text" id="startDate" placeholder="Start Date" onfocus="(this.type='date')" onChange="findEndDate()">
-           <input type="text" id="endDate"  placeholder="Expiration Date" readonly>
-            <button type="button" id="back2">Back</button>
+<select name="startingpoint" id="startingpoint" class="option-background">
+    <option value="">Select starting point </option>
 
-            <button type="button" id="rzp-button1" onclick="studentdetails()">submit </button>
-  
-</a>
-        </div>
+    <option value="Aluva">Aluva</option>
+    <option value="Paravoor kavala">Paravoor kavala</option>
+    <option value="Paravoor">Paravoor</option>
+    <option value="Mannam">Mannam</option>
+    <option value="Karichira">Karichira</option>
+    <option value="Thattampadi">Thattampadi</option>
+    <option value="Kottapuram">Kottapuram</option>
+    <option value="Malikampeedika">Malikampeedika</option>
 
+
+
+</select>          
+<select name="endingpoint" id="endingpoint" class="option-background">
+      <option value="">Select destination</option>
+      <option value="Union Christian College, Aluva">Union Christian College, Aluva</option>
+
+ 
+</select>           
+       <input type="text" id="startDate" placeholder="Start Date" onfocus="(this.type='date')" onChange="findEndDate()">
+       <input type="text" id="endDate"  placeholder="Expiration Date" readonly>
+       <button type="button" id="back2">Back</button>
+       <button type="button" id="rzp-button1" onclick="studentdetails()">submit </button></a>
+    </div>
     </form>
     <dvi class="step-row">
             <div id="progress"></div>
             <div class="step-col"><small>step 1</small></div>
-                    <div class="step-col"><small>step 2</small></div>
+            <div class="step-col"><small>step 2</small></div>
             <div class="step-col"><small>step 3</small></div>
-
-
-        </dvi>
+    </dvi>
 
 </div>
           <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -93,7 +126,7 @@
     var back1= document.getElementById("back1");
     var back2= document.getElementById("back2");
 
-         var progress= document.getElementById("progress");
+    var progress= document.getElementById("progress");
 
 
     next1.onclick= function () {
@@ -144,7 +177,6 @@ function format(dateIn) {
             "phonenumber": document.getElementById("phonenumber").value,
             "dateofbirth": document.getElementById("dateofbirth").value,
             "admissionnumber": document.getElementById("admissionnumber").value,
-            "collegeidcard": document.getElementById("collegeidcard").value,                   
             "educationalinstitution": document.getElementById("educationalinstitution").value ,                  
             "courseofstudy": document.getElementById("courseofstudy").value  ,                 
             "academicyearofstudy": document.getElementById("academicyearofstudy").value  ,                 
@@ -156,7 +188,7 @@ function format(dateIn) {
              };
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/apply", true);
+        xhr.open("POST", "/apply", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         
         xhr.onreadystatechange = () => {
@@ -191,7 +223,7 @@ const data = {
     "receipt": "qwsaq1",
     "partial_payment": false
 }
-xhr.open("POST", "http://localhost:8080/orderid", true);
+xhr.open("POST", "/orderid", true);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
 //xhr.setRequestHeader("Authorization", "Basic " + btoa("rzp_test_8FOoAcnh1nEyjc" + ":" + "ohTymlr9zcdldhryusMUjMXc"))
@@ -207,12 +239,12 @@ var options = {
     "currency": "INR",
     "name": "Ease Pass", //your business name
     "description": "Test Transaction",
-    "image": "http://localhost:8080/LOGO-modified.png",
+    "image": "/LOGO-modified.png",
     "order_id": JSON.parse(xhr.responseText).id,
-    "callback_url": "http://localhost:8080/studenthome",
+    "callback_url": "/studenthome",
     "handler": function (response)
     { 
-        window.location.replace("http://localhost:8080/studenthome");
+        window.location.replace("/studenthome");
     },
     "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
         "name": "", //your customer's name
